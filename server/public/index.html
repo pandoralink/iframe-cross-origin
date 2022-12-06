@@ -1,0 +1,35 @@
+<body></body>
+<script>
+  switch (location.hash) {
+    case "#users":
+      callback("users");
+      break;
+  }
+
+  /**
+   * iframe 跨域回调
+   * @param {string} path 请求路径
+   */
+  function callback(path) {
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", `http://localhost:3001/${path}`);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            location.hash = xhr.response;
+          }
+        }
+      };
+      xhr.send();
+      parent.location.hash = data;
+    } catch (e) {
+      // ie, chrome 下的安全机制无法修改 parent.location.hash
+      // 所以要利用一个中间的代理 iframe
+      const proxyIframe = document.createElement("iframe");
+      proxyIframe.style.display = "none";
+      proxyIframe.src = "http://localhost:3000/proxy.html#" + data; // 该文件在 client 域名的域下
+      document.body.appendChild(ifrproxy);
+    }
+  }
+</script>
