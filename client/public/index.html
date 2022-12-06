@@ -1,27 +1,21 @@
-<body></body>
+<body>
+  <button onclick="getUsers()">请求</button>
+</body>
 <script>
-  // const xhr = new XMLHttpRequest();
-  // xhr.open("GET", "http://localhost:3001/users");
-  // xhr.onreadystatechange = () => {
-  //   if (xhr.readyState === 4) {
-  //     if (xhr.status === 200) {
-  //       console.log(xhr.response);
-  //     }
-  //   }
-  // };
-  // xhr.send();
-  let ifr = document.createElement("iframe");
-  ifr.style.display = "none";
-  ifr.src = "http://localhost:3001/#users";
-  document.body.appendChild(ifr);
+  const getUsers = () => {
+    let clientIframe = document.getElementById("clientIframe");
+    if (!clientIframe) {
+      clientIframe = document.createElement("iframe");
+      clientIframe.id = "clientIframe";
+      clientIframe.style.display = "none";
+      clientIframe.src = "http://localhost:3001/data.html#users";
+      document.body.appendChild(clientIframe);
+    } else {
+      clientIframe.src = "http://localhost:3001/data.html#users";
+    }
 
-  function checkHash() {
-    try {
-      let data = location.hash ? location.hash.substring(1) : "";
-      console.log("获得到的数据是：", data);
-    } catch (e) {}
-  }
-  window.addEventListener("hashchange", function (e) {
-    console.log("获得的数据是：", location.hash.substring(1));
-  });
+    window.addEventListener("hashchange", function (e) {
+      console.log("返回响应", location.hash.substring(1));
+    });
+  };
 </script>
